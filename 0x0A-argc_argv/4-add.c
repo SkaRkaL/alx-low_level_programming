@@ -1,69 +1,93 @@
 #include "main.h"
 #include <stdio.h>
 #include <stdlib.h>
+
 /**
- * _atoi - convert nbr string to number
- * @s: string
- * Return: number or 0
+ * _isdigit - checks for a digit (0 through 9)
+ * @c: digit for test
+ * Return: 1 or  0
+ */
+int _isdigit(int c)
+{
+	return ((c >= 48) && (c <= 57));
+}
+
+/**
+ * _atoi - Convert a string to an integer.
+ * @s: The pointer to convert
+ *
+ * Return: A integer
  */
 int _atoi(char *s)
 {
-int number = 0, i = 0;
-int sg = 1;
-int size = 0;
-while (s[size] != '\0')
-size++;
-while (i < size)
-{
-if (s[i] == '-')
-{
-sg = -1;
+	int c = 0;
+	unsigned int ni = 0;
+	int min = 1;
+	int isi = 0;
+
+	while (s[c])
+	{
+		if (s[c] == 45)
+		{
+			min *= -1;
+		}
+
+		while (s[c] >= 48 && s[c] <= 57)
+		{
+			isi = 1;
+			ni = (ni * 10) + (s[c] - '0');
+			c++;
+		}
+
+		if (isi == 1)
+		{
+			break;
+		}
+
+		c++;
+	}
+
+	ni *= min;
+	return (ni);
 }
-else
-if (s[i] >= '0' && s[i] <= '9')
-{
-number = 10 * number + (s[i] - 48);
-}
-else
-{
-return (0);
-}
-i++;
-}
-return (number *sg);
-}
+
 /**
  * main - program that adds positive numbers
  * @argc: argument counter
  * @argv: argument values
  * Return: 0 (SUCCESS)
  */
-int main(int argc, char *argv[])
+int main(int argc, char *argv[]) 
 {
-int add = 0, i;
+	int	sum = 0;
+	int	i;
 
-if (argc > 1)
-{
-i = 1;
-while (i < argc)
-{
-if (_atoi(argv[i]) != 0)
-{
-add += _atoi(argv[i]);
-}
-else
-{
-printf("Error\n");
-return (1);
-}
-i++;
-}
-printf("%d\n", add);
-}
-else
-{
-printf("0\n");
-return (1);
-}
-return (0);
+	if (argc == 1)
+	{
+		printf("%d\n", sum);
+		return 0;
+	}
+
+	for (i = 1; i < argc; i++)
+	{
+		char	*arg = argv[i];
+		int	j;
+		for (j = 0; arg[j] != '\0'; j++)
+		{
+			if (!_isdigit(arg[j]))
+			{
+				printf("Error\n");
+				return 1;
+			}
+		}
+		int	num = _atoi(arg);
+		if (num < 0)
+		{
+			printf("Error\n");
+			return 1;
+		}
+		sum += num;
+	}
+	printf("%d\n", sum);
+	return 0;
 }
